@@ -6,37 +6,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="1 XposedInstaller安装1.1初始化UI关键回调函数onCreateView:
-（1）判断SDK版本确认Xposed版Zygote的版本
-（2）checkCompatibility()检查兼容性
-（3）refeshVersions()获取版本信息
+    <meta name="description" content="1 XposedInstaller安装1.1初始化UI​    关键回调函数onCreateView:
+​    （1）判断SDK版本确认Xposed版Zygote的版本
+​    （2）checkCompatibility()检查兼容性
+​    （3）refeshVersions()获取版本信息
 1.2安装Xposed框架相关模块函数install：
 （1） 获取安装模式
-（2） Recovery文件拷贝到SD卡
-（3） 选好的ap">
+（2） Recove">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Xposed 原理解析">
 <meta property="og:url" content="http://yoursite.com/2016/12/13/Xposed/index.html">
 <meta property="og:site_name" content="Mellisa's blog">
-<meta property="og:description" content="1 XposedInstaller安装1.1初始化UI关键回调函数onCreateView:
-（1）判断SDK版本确认Xposed版Zygote的版本
-（2）checkCompatibility()检查兼容性
-（3）refeshVersions()获取版本信息
+<meta property="og:description" content="1 XposedInstaller安装1.1初始化UI​    关键回调函数onCreateView:
+​    （1）判断SDK版本确认Xposed版Zygote的版本
+​    （2）checkCompatibility()检查兼容性
+​    （3）refeshVersions()获取版本信息
 1.2安装Xposed框架相关模块函数install：
 （1） 获取安装模式
-（2） Recovery文件拷贝到SD卡
-（3） 选好的ap">
-<meta property="og:updated_time" content="2017-04-11T01:19:02.704Z">
+（2） Recove">
+<meta property="og:updated_time" content="2017-04-11T01:22:51.438Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Xposed 原理解析">
-<meta name="twitter:description" content="1 XposedInstaller安装1.1初始化UI关键回调函数onCreateView:
-（1）判断SDK版本确认Xposed版Zygote的版本
-（2）checkCompatibility()检查兼容性
-（3）refeshVersions()获取版本信息
+<meta name="twitter:description" content="1 XposedInstaller安装1.1初始化UI​    关键回调函数onCreateView:
+​    （1）判断SDK版本确认Xposed版Zygote的版本
+​    （2）checkCompatibility()检查兼容性
+​    （3）refeshVersions()获取版本信息
 1.2安装Xposed框架相关模块函数install：
 （1） 获取安装模式
-（2） Recovery文件拷贝到SD卡
-（3） 选好的ap">
+（2） Recove">
     
     
         
@@ -156,28 +153,29 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h1 id="1-XposedInstaller安装"><a href="#1-XposedInstaller安装" class="headerlink" title="1 XposedInstaller安装"></a>1 XposedInstaller安装</h1><h2 id="1-1初始化UI"><a href="#1-1初始化UI" class="headerlink" title="1.1初始化UI"></a>1.1初始化UI</h2><p>关键回调函数onCreateView:</p>
-<p>（1）判断SDK版本确认Xposed版Zygote的版本</p>
-<p>（2）checkCompatibility()检查兼容性</p>
-<p>（3）refeshVersions()获取版本信息</p>
+    <h1 id="1-XposedInstaller安装"><a href="#1-XposedInstaller安装" class="headerlink" title="1 XposedInstaller安装"></a>1 XposedInstaller安装</h1><h2 id="1-1初始化UI"><a href="#1-1初始化UI" class="headerlink" title="1.1初始化UI"></a>1.1初始化UI</h2><p>​    关键回调函数onCreateView:</p>
+<p>​    （1）判断SDK版本确认Xposed版Zygote的版本</p>
+<p>​    （2）checkCompatibility()检查兼容性</p>
+<p>​    （3）refeshVersions()获取版本信息</p>
 <h2 id="1-2安装Xposed框架"><a href="#1-2安装Xposed框架" class="headerlink" title="1.2安装Xposed框架"></a>1.2安装Xposed框架</h2><p>相关模块函数install：</p>
-<p>（1） 获取安装模式</p>
-<p>（2） Recovery文件拷贝到SD卡</p>
-<p>（3） 选好的app_process_sdkXX拷贝为/data/data/de.robv.android.xposed.installer/bin/app-process</p>
-<p>（4） 如果普通安装模式</p>
+<p><strong>（1） 获取安装模式</strong></p>
+<p><strong>（2） Recovery文件拷贝到SD卡</strong></p>
+<p><strong>（3） 选好的app_process_sdkXX拷贝为</strong></p>
+<p>​                /data/data/de.robv.android.xposed.installer/bin/app-process</p>
+<p><strong>（4） 如果普通安装模式</strong></p>
 <p>​    a) 挂载system分区为可读写模式</p>
 <p>​    b) 将系统原来app_process改名为app_process.orig</p>
 <p>​    c)将Xposed版app_process拷贝为system/bin/app_process</p>
-<p>（5） 如果为recovery模式</p>
+<p><strong>（5） 如果为recovery模式</strong></p>
 <p>​           处理recovery包</p>
-<p>（6） 在data/data/de.robv.android.xposed.installer目录下放置XposedBridge.jar</p>
-<h1 id="2-xposed初始化"><a href="#2-xposed初始化" class="headerlink" title="2 xposed初始化"></a>2 xposed初始化</h1><h2 id="2-1系统启动时"><a href="#2-1系统启动时" class="headerlink" title="2.1系统启动时"></a>2.1系统启动时</h2><p>   (1）替换app_process</p>
-<p>（2）初始化和启动Dalvik虚拟机</p>
-<p>（3）注册XoisedBridge的JNI函数，Android系统的JNI函数</p>
-<p>（4）调用XpoedBridge.main方法</p>
-<h3 id="a-InitNative"><a href="#a-InitNative" class="headerlink" title="a)   InitNative"></a>a)   InitNative</h3><p>注册钩子函数总入口（handleHookedMethod &amp;invokeOriginalNative）</p>
-<p>注册资源替换相关函数</p>
-<p>注册服务替换相关函数</p>
+<p><strong>（6） 在data/data/de.robv.android.xposed.installer目录下放置XposedBridge.jar</strong></p>
+<h1 id="2-xposed初始化"><a href="#2-xposed初始化" class="headerlink" title="2 xposed初始化"></a>2 xposed初始化</h1><h2 id="2-1系统启动时"><a href="#2-1系统启动时" class="headerlink" title="2.1系统启动时"></a>2.1系统启动时</h2><p>​    （1）替换app_process</p>
+<p>​    （2）初始化和启动Dalvik虚拟机</p>
+<p>​    （3）注册XoisedBridge的JNI函数，Android系统的JNI函数</p>
+<p>​    （4）调用XpoedBridge.main方法</p>
+<h3 id="a-InitNative"><a href="#a-InitNative" class="headerlink" title="a)   InitNative"></a>a)   InitNative</h3><p>​    注册钩子函数总入口（handleHookedMethod &amp;invokeOriginalNative）</p>
+<p>​    注册资源替换相关函数</p>
+<p>​    注册服务替换相关函数</p>
 <h3 id="b-InintZygote"><a href="#b-InintZygote" class="headerlink" title="b)   InintZygote"></a>b)   InintZygote</h3><table>
 <thead>
 <tr>
