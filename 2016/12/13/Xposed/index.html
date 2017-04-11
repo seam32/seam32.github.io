@@ -26,7 +26,7 @@
 （1） 获取安装模式
 （2） Recovery文件拷贝到SD卡
 （3） 选好的ap">
-<meta property="og:updated_time" content="2017-04-11T01:14:12.273Z">
+<meta property="og:updated_time" content="2017-04-11T01:19:02.704Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Xposed 原理解析">
 <meta name="twitter:description" content="1 XposedInstaller安装1.1初始化UI关键回调函数onCreateView:
@@ -117,7 +117,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-XposedInstaller安装"><span class="toc-number">1.</span> <span class="toc-text">1 XposedInstaller安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1初始化UI"><span class="toc-number">1.1.</span> <span class="toc-text">1.1初始化UI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2安装Xposed框架"><span class="toc-number">1.2.</span> <span class="toc-text">1.2安装Xposed框架</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-xposed初始化"><span class="toc-number">2.</span> <span class="toc-text">2 xposed初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1系统启动时"><span class="toc-number">2.1.</span> <span class="toc-text">2.1系统启动时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2每个应用程序启动时"><span class="toc-number">2.2.</span> <span class="toc-text">2.2每个应用程序启动时</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-XposedInstaller安装"><span class="toc-number">1.</span> <span class="toc-text">1 XposedInstaller安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1初始化UI"><span class="toc-number">1.1.</span> <span class="toc-text">1.1初始化UI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2安装Xposed框架"><span class="toc-number">1.2.</span> <span class="toc-text">1.2安装Xposed框架</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-xposed初始化"><span class="toc-number">2.</span> <span class="toc-text">2 xposed初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1系统启动时"><span class="toc-number">2.1.</span> <span class="toc-text">2.1系统启动时</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a-InitNative"><span class="toc-number">2.1.1.</span> <span class="toc-text">a)   InitNative</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b-InintZygote"><span class="toc-number">2.1.2.</span> <span class="toc-text">b)   InintZygote</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#c-LoadModlue"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">c)    LoadModlue</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#d-执行原Zygote-init"><span class="toc-number">2.1.3.</span> <span class="toc-text">d)   执行原Zygote.init</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2每个应用程序启动时"><span class="toc-number">2.2.</span> <span class="toc-text">2.2每个应用程序启动时</span></a></li></ol></li></ol>
     </div>
   </span>
 </div>
@@ -147,7 +147,7 @@
       
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Android-Xposed/">Android,Xposed</a>
+        <a class="tag-link" href="/tags/Android/">Android</a>
     </div>
 
 
@@ -165,22 +165,20 @@
 <p>（2） Recovery文件拷贝到SD卡</p>
 <p>（3） 选好的app_process_sdkXX拷贝为/data/data/de.robv.android.xposed.installer/bin/app-process</p>
 <p>（4） 如果普通安装模式</p>
-<p>​         <code>a) 挂载system分区为可读写模式</code></p>
-<p><code>b) 将系统原来app_process改名为app_process.orig</code></p>
-<p><code>c)将Xposed版app_process拷贝为system/bin/app_process</code></p>
+<p>​    a) 挂载system分区为可读写模式</p>
+<p>​    b) 将系统原来app_process改名为app_process.orig</p>
+<p>​    c)将Xposed版app_process拷贝为system/bin/app_process</p>
 <p>（5） 如果为recovery模式</p>
 <p>​           处理recovery包</p>
 <p>（6） 在data/data/de.robv.android.xposed.installer目录下放置XposedBridge.jar</p>
-<h1 id="2-xposed初始化"><a href="#2-xposed初始化" class="headerlink" title="2 xposed初始化"></a>2 xposed初始化</h1><h2 id="2-1系统启动时"><a href="#2-1系统启动时" class="headerlink" title="2.1系统启动时"></a>2.1系统启动时</h2><p>   （1）替换app_process</p>
+<h1 id="2-xposed初始化"><a href="#2-xposed初始化" class="headerlink" title="2 xposed初始化"></a>2 xposed初始化</h1><h2 id="2-1系统启动时"><a href="#2-1系统启动时" class="headerlink" title="2.1系统启动时"></a>2.1系统启动时</h2><p>   (1）替换app_process</p>
 <p>（2）初始化和启动Dalvik虚拟机</p>
 <p>（3）注册XoisedBridge的JNI函数，Android系统的JNI函数</p>
 <p>（4）调用XpoedBridge.main方法</p>
-<p>a)   InitNative</p>
-<p>注册钩子函数总入口（handleHookedMethod &amp;invokeOriginalNative）</p>
+<h3 id="a-InitNative"><a href="#a-InitNative" class="headerlink" title="a)   InitNative"></a>a)   InitNative</h3><p>注册钩子函数总入口（handleHookedMethod &amp;invokeOriginalNative）</p>
 <p>注册资源替换相关函数</p>
 <p>注册服务替换相关函数</p>
-<p>b)   InintZygote</p>
-<table>
+<h3 id="b-InintZygote"><a href="#b-InintZygote" class="headerlink" title="b)   InintZygote"></a>b)   InintZygote</h3><table>
 <thead>
 <tr>
 <th style="text-align:center">钩子种类</th>
@@ -202,11 +200,9 @@
 </tr>
 </tbody>
 </table>
-<p>c)    LoadModlue</p>
-<p>​    加载所有插件app，判断和检验钩子类型，并保存合法的钩子。</p>
-<p>d)   执行原Zygote.init</p>
-<h2 id="2-2每个应用程序启动时"><a href="#2-2每个应用程序启动时" class="headerlink" title="2.2每个应用程序启动时"></a>2.2每个应用程序启动时</h2><p>APP由zygote进程fork而来，在hanldeBindApplication之前，这个APP进程和zygote没什么区别。只有调用完handleBindApplication之后，这个APP进程才是APP,比如该进程有了对应的名字，Aplication对象被创建等。</p>
-<p>handleBindApplication是APP刚准备好相关信息的一个重要点，此处的<strong>挂钩处理</strong>也就是<strong>准备好这个**</strong>APP<strong><strong>的相关信息</strong></strong>然后调用所有的IXposedHookLoadPackage<strong>**类型的钩子</strong>。</p>
+<h4 id="c-LoadModlue"><a href="#c-LoadModlue" class="headerlink" title="c)    LoadModlue"></a>c)    LoadModlue</h4><p>​    加载所有插件app，判断和检验钩子类型，并保存合法的钩子。</p>
+<h3 id="d-执行原Zygote-init"><a href="#d-执行原Zygote-init" class="headerlink" title="d)   执行原Zygote.init"></a>d)   执行原Zygote.init</h3><h2 id="2-2每个应用程序启动时"><a href="#2-2每个应用程序启动时" class="headerlink" title="2.2每个应用程序启动时"></a>2.2每个应用程序启动时</h2><p>​    APP由zygote进程fork而来，在hanldeBindApplication之前，这个APP进程和zygote没什么区别。只有调用完handleBindApplication之后，这个APP进程才是APP,比如该进程有了对应的名字，Aplication对象被创建等。</p>
+<p>​    handleBindApplication是APP刚准备好相关信息的一个重要点，此处的<strong>挂钩处理</strong>也就是<strong>准备好这个**</strong>APP<strong><strong>的相关信息</strong></strong>然后调用所有的IXposedHookLoadPackage<strong>**类型的钩子</strong>。</p>
 
   </div>
 </article>
@@ -233,7 +229,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-XposedInstaller安装"><span class="toc-number">1.</span> <span class="toc-text">1 XposedInstaller安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1初始化UI"><span class="toc-number">1.1.</span> <span class="toc-text">1.1初始化UI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2安装Xposed框架"><span class="toc-number">1.2.</span> <span class="toc-text">1.2安装Xposed框架</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-xposed初始化"><span class="toc-number">2.</span> <span class="toc-text">2 xposed初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1系统启动时"><span class="toc-number">2.1.</span> <span class="toc-text">2.1系统启动时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2每个应用程序启动时"><span class="toc-number">2.2.</span> <span class="toc-text">2.2每个应用程序启动时</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-XposedInstaller安装"><span class="toc-number">1.</span> <span class="toc-text">1 XposedInstaller安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1初始化UI"><span class="toc-number">1.1.</span> <span class="toc-text">1.1初始化UI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2安装Xposed框架"><span class="toc-number">1.2.</span> <span class="toc-text">1.2安装Xposed框架</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-xposed初始化"><span class="toc-number">2.</span> <span class="toc-text">2 xposed初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1系统启动时"><span class="toc-number">2.1.</span> <span class="toc-text">2.1系统启动时</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a-InitNative"><span class="toc-number">2.1.1.</span> <span class="toc-text">a)   InitNative</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b-InintZygote"><span class="toc-number">2.1.2.</span> <span class="toc-text">b)   InintZygote</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#c-LoadModlue"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">c)    LoadModlue</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#d-执行原Zygote-init"><span class="toc-number">2.1.3.</span> <span class="toc-text">d)   执行原Zygote.init</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2每个应用程序启动时"><span class="toc-number">2.2.</span> <span class="toc-text">2.2每个应用程序启动时</span></a></li></ol></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">
